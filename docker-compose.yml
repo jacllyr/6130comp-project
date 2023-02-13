@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  presentation1:
+    build: presentation/User-Form
+    ports:
+      - "81:80"
+    environment:
+      - DATABASE_HOST=db
+    depends_on:
+      - business_logic
+    networks:
+      - my_network
+
+  presentation2:
+    build: presentation/User-Form
+    ports:
+      - "82:80"
+    environment:
+      - DATABASE_HOST=db
+    depends_on:
+      - business_logic
+    networks:
+      - my_network
+
+  presentation3:
+    build: presentation/User-Form
+    ports:
+      - "83:80"
+    environment:
+      - DATABASE_HOST=db
+    depends_on:
+      - business_logic
+    networks:
+      - my_network      
+
+  business_logic:
+    build: ./business_logic
+    ports:
+      - "8443:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - my_network
+
+  database:
+    image: my-mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - my_network
+
+  nginx:
+    build: presentation/nginx-LoadBalancer
+    ports:
+      - "80:80"
+    environment:
+      - DATABASE_HOST=db
+    depends_on:
+      - presentation1
+      - presentation2
+      - presentation3
+    networks:
+      - my_network
+
+networks:
+  my_network:
