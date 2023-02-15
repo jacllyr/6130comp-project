@@ -1,6 +1,7 @@
 <?php
 
-require 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $client = new MongoDB\Client("mongodb://root:password@172.17.0.1:27017");

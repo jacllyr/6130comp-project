@@ -10,33 +10,7 @@ services:
     networks:
       - frontend
       - backend
-
-  pres_node1:
-    build: ./presentation/web/
-    ports:
-      - "8081:80"
-    environment:
-      - DATABASE_HOST=db
-    networks:
-      - frontend
-
-  pres_node2:
-    build: ./presentation/web/
-    ports:
-      - "8082:80"
-    environment:
-      - DATABASE_HOST=db
-    networks:
-      - frontend
-
-  pres_node3:
-    build: ./presentation/web/
-    ports:
-      - "8083:80"
-    environment:
-      - DATABASE_HOST=db
-    networks:
-      - frontend    
+      - db
 
   presentation_loadbalancer:
     build: ./presentation/loadbalancer/
@@ -51,33 +25,40 @@ services:
     networks:
       - frontend
       - backend
+      - db
 
-  business_node1:
-    build: ./business_logic/backend/
+  pres_node1:
+    build: ./presentation/web/
     ports:
-      - "9081:80"
+      - "81:80"
     environment:
       - DATABASE_HOST=db
     networks:
+      - frontend
       - backend
+      - db
 
-  business_node2:
-    build: ./business_logic/backend/
+  pres_node2:
+    build: ./presentation/web/
     ports:
-      - "9082:80"
+      - "82:80"
     environment:
       - DATABASE_HOST=db
     networks:
+      - frontend
       - backend
+      - db
 
-  business_node3:
-    build: ./business_logic/backend/
+  pres_node3:
+    build: ./presentation/web/
     ports:
-      - "9083:80"
+      - "83:80"
     environment:
       - DATABASE_HOST=db
     networks:
+      - frontend
       - backend
+      - db
 
   business_loadbalancer:
     build: ./business_logic/loadbalancer/
@@ -90,9 +71,46 @@ services:
       - business_node2
       - business_node3
     networks:
-      - backend
       - frontend
+      - backend
+      - db
+
+  business_node1:
+    build: ./business_logic/backend/
+    ports:
+      - "3001:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - frontend
+      - backend
+      - db
+
+  business_node2:
+    build: ./business_logic/backend/
+    ports:
+      - "3002:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - frontend
+      - backend
+      - db
+
+  business_node3:
+    build: ./business_logic/backend/
+    ports:
+      - "3003:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - frontend
+      - backend
+      - db
+
+
 
 networks:
   frontend:
   backend:
+  db:
