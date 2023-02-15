@@ -1,67 +1,98 @@
 version: '3'
 
 services:
-  presentation1:
-    build: presentation/User-Form
-    ports:
-      - "81:80"
-    environment:
-      - DATABASE_HOST=db
-    depends_on:
-      - business_logic
-    networks:
-      - my_network
-
-  presentation2:
-    build: presentation/User-Form
-    ports:
-      - "82:80"
-    environment:
-      - DATABASE_HOST=db
-    depends_on:
-      - business_logic
-    networks:
-      - my_network
-
-  presentation3:
-    build: presentation/User-Form
-    ports:
-      - "83:80"
-    environment:
-      - DATABASE_HOST=db
-    depends_on:
-      - business_logic
-    networks:
-      - my_network      
-
-  business_logic:
-    build: ./business_logic
-    ports:
-      - "8443:80"
-    environment:
-      - DATABASE_HOST=db
-    networks:
-      - my_network
 
   database:
+    build: ./database
     image: my-mongo
     ports:
       - "27017:27017"
     networks:
-      - my_network
+      - frontend
+      - backend
 
-  nginx:
-    build: presentation/nginx-LoadBalancer
+  pres_node1:
+    build: ./presentation/web/
+    ports:
+      - "8081:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - frontend
+
+  pres_node2:
+    build: ./presentation/web/
+    ports:
+      - "8082:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - frontend
+
+  pres_node3:
+    build: ./presentation/web/
+    ports:
+      - "8083:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - frontend    
+
+  presentation_loadbalancer:
+    build: ./presentation/loadbalancer/
     ports:
       - "80:80"
     environment:
       - DATABASE_HOST=db
     depends_on:
-      - presentation1
-      - presentation2
-      - presentation3
+      - pres_node1
+      - pres_node2
+      - pres_node3
     networks:
-      - my_network
+      - frontend
+      - backend
+
+  business_node1:
+    build: ./business_logic/backend/
+    ports:
+      - "9081:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - backend
+
+  business_node2:
+    build: ./business_logic/backend/
+    ports:
+      - "9082:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - backend
+
+  business_node3:
+    build: ./business_logic/backend/
+    ports:
+      - "9083:80"
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - backend
+
+  business_loadbalancer:
+    build: ./business_logic/loadbalancer/
+    ports:
+      - "3000:80"
+    environment:
+      - DATABASE_HOST=db
+    depends_on:
+      - business_node1
+      - business_node2
+      - business_node3
+    networks:
+      - backend
+      - frontend
 
 networks:
-  my_network:
+  frontend:
+  backend:
