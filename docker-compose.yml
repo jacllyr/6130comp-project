@@ -63,7 +63,7 @@ services:
   business_loadbalancer:
     build: ./business_logic/loadbalancer/
     ports:
-      - "3000:80"
+      - "3000:3000"
     environment:
       - DATABASE_HOST=db
     depends_on:
