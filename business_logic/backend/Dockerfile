@@ -1,6 +1,5 @@
-FROM php:8.2-apache
+FROM php:7.4-apache
 COPY src/ /var/www/html/
-WORKDIR /var/www/html
 
 # Setup Mongo Driver
 ENV COMPOSER_ALLOW_SUPERUSER=1
