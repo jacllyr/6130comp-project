@@ -1,0 +1,157 @@
+version: '3'
+
+services:
+
+  #Data Tier
+  mongo1:
+    image: mongo:6.0.4
+    container_name: mongo1
+    restart: always
+    ports:
+      - "40001:27017"
+    networks:
+      - db
+      - backend
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+  mongo2:
+    image: mongo:6.0.4
+    container_name: mongo2
+    restart: always
+    ports:
+      - "40002:27017"
+    networks:
+      - db
+      - backend
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+  mongo3:
+    image: mongo:6.0.4
+    container_name: mongo3
+    restart: always
+    ports:
+      - "40003:27017"
+    networks:
+      - db
+      - backend
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+  mongo-setup:
+    image: mongo:6.0.4
+    hostname: mongo-config
+    container_name: mongo-config
+    networks:
+      - db
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    restart: "no"
+    volumes:
+      - ./database/setup.sh:/database/setup.sh
+      - ./database/init.js:/database/init.js
+    entrypoint: [ "bash", "/database/setup.sh" ]
+
+  #Presentation Tier
+  frontend_node1:
+    build: ./presentation/web/
+    restart: always
+    ports:
+      - "81:80"
+    networks:
+      - frontend
+      - backend
+
+  frontend_node2:
+    build: ./presentation/web/
+    restart: always
+    ports:
+      - "82:80"
+    networks:
+      - frontend
+      - backend
+
+  frontend_node3:
+    build: ./presentation/web/
+    restart: always
+    ports:
+      - "83:80"
+    networks:
+      - frontend
+      - backend
+
+  frontend_loadbalancer:
+    build: ./presentation/loadbalancer/
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend_node1
+      - frontend_node2
+      - frontend_node3
+    networks:
+      - frontend
+      - backend
+
+  #Business Tier
+  backend_loadbalancer:
+    build: ./business_logic/loadbalancer/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend_node1
+      - backend_node2
+      - backend_node3
+    networks:
+      - backend
+      - frontend
+      - db
+
+  backend_node1:
+    build: ./business_logic/backend/
+    restart: always
+    ports:
+      - "3001:80"
+    networks:
+      - backend
+      - db
+
+  backend_node2:
+    build: ./business_logic/backend/
+    restart: always
+    ports:
+      - "3002:80"
+    networks:
+      - backend
+      - db
+
+  backend_node3:
+    build: ./business_logic/backend/
+    restart: always
+    ports:
+      - "3003:80"
+    networks:
+      - backend
+      - db
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+  db:
+    driver: bridge
