@@ -68,6 +68,18 @@ services:
     entrypoint: [ "bash", "/database/setup.sh" ]
 
   #Presentation Tier
+  frontend_loadbalancer:
+    build: ./presentation/loadbalancer/
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend_node1
+      - frontend_node2
+      - frontend_node3
+    networks:
+      - frontend
+      - backend
+
   frontend_node1:
     build: ./presentation/web/
     restart: always
@@ -91,18 +103,6 @@ services:
     restart: always
     ports:
       - "83:80"
-    networks:
-      - frontend
-      - backend
-
-  frontend_loadbalancer:
-    build: ./presentation/loadbalancer/
-    ports:
-      - "80:80"
-    depends_on:
-      - frontend_node1
-      - frontend_node2
-      - frontend_node3
     networks:
       - frontend
       - backend

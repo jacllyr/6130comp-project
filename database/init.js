@@ -11,7 +11,7 @@ function Generate10HexCode() {
         let hexPattern = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 's', 'd', 'f'];
 
         for (let n = 0; n < 10; n++) {
-            result.push(hexPattern[Math.floor(Math.random() * 16)]);
+            result.push(hexPattern[Math.floor(Math.random() * 14)]);
         }
 
         voucherCode = result.join('');
@@ -32,5 +32,5 @@ db.codes.insertMany([
 ]);
 
 // Generate the codes
-db.codes.findOne({ 'code': '1234567890' })
+db.codes.findOne({ 'voucherCode': '1234567890' })
 db.users.insertOne({})

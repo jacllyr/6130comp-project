@@ -1,10 +1,11 @@
 <?php
 
 // Load our template
-$head = file_get_contents("head.html");
+$header = file_get_contents("header.html");
 // form template
 $form = file_get_contents("form.html");
 $footer = file_get_contents("footer.html");
 
-echo $head . $form . $footer;
+echo $header . $form . $footer;
+
 ?>

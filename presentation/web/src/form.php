@@ -31,9 +31,5 @@ HTML;
 HTML;
 }
 
-// The head and footer are loaded from the head.html and footer.html files
-$head = file_get_contents("head.html");
-$footer = file_get_contents("footer.html");
-
-echo $head . $body . $footer;
+echo $body ;
 ?>

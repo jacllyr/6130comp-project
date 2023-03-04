@@ -32,4 +32,4 @@ EOF
 
 sleep 5
 
-mongosh --host mongo1:27017 < /database/init.js
+mongosh --host mongo1:27017 </database/init.js
