@@ -1,85 +1,7 @@
-version: '3'
+version: '3.8'
 
 services:
-
-  #Data Tier
-  mongo1:
-    image: mongo:6.0.4
-    container_name: mongo1
-    restart: always
-    ports:
-      - "40001:27017"
-    networks:
-      - db
-      - backend
-    entrypoint:
-      [
-        "/usr/bin/mongod",
-        "--bind_ip_all",
-        "--replSet",
-        "rs0"
-      ]
-  mongo2:
-    image: mongo:6.0.4
-    container_name: mongo2
-    restart: always
-    ports:
-      - "40002:27017"
-    networks:
-      - db
-      - backend
-    entrypoint:
-      [
-        "/usr/bin/mongod",
-        "--bind_ip_all",
-        "--replSet",
-        "rs0"
-      ]
-  mongo3:
-    image: mongo:6.0.4
-    container_name: mongo3
-    restart: always
-    ports:
-      - "40003:27017"
-    networks:
-      - db
-      - backend
-    entrypoint:
-      [
-        "/usr/bin/mongod",
-        "--bind_ip_all",
-        "--replSet",
-        "rs0"
-      ]
-  mongo-setup:
-    image: mongo:6.0.4
-    hostname: mongo-config
-    container_name: mongo-config
-    networks:
-      - db
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
-    restart: "no"
-    volumes:
-      - ./database/setup.sh:/database/setup.sh
-      - ./database/init.js:/database/init.js
-    entrypoint: [ "bash", "/database/setup.sh" ]
-
   #Presentation Tier
-  frontend_loadbalancer:
-    build: ./presentation/loadbalancer/
-    ports:
-      - "80:80"
-    depends_on:
-      - frontend_node1
-      - frontend_node2
-      - frontend_node3
-    networks:
-      - frontend
-      - backend
-
   frontend_node1:
     build: ./presentation/web/
     restart: always
@@ -107,20 +29,19 @@ services:
       - frontend
       - backend
 
-  #Business Tier
-  backend_loadbalancer:
-    build: ./business_logic/loadbalancer/
+  frontend_loadbalancer:
+    build: ./presentation/loadbalancer/
     ports:
-      - "3000:3000"
+      - "80:80"
     depends_on:
-      - backend_node1
-      - backend_node2
-      - backend_node3
+      - frontend_node1
+      - frontend_node2
+      - frontend_node3
     networks:
-      - backend
       - frontend
-      - db
+      - backend
 
+  #Business Tier
   backend_node1:
     build: ./business_logic/backend/
     restart: always
@@ -147,6 +68,87 @@ services:
     networks:
       - backend
       - db
+
+  backend_loadbalancer:
+    build: ./business_logic/loadbalancer/
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend_node1
+      - backend_node2
+      - backend_node3
+    networks:
+      - backend
+      - frontend
+      - db
+
+  #Data Tier
+  mongo1:
+    image: mongo:4.1
+    container_name: mongo1
+    restart: always
+    ports:
+      - "40001:27017"
+    networks:
+      - db
+      - backend
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+
+  mongo2:
+    image: mongo:4.1
+    container_name: mongo2
+    restart: always
+    ports:
+      - "40002:27017"
+    networks:
+      - db
+      - backend
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+
+  mongo3:
+    image: mongo:4.1
+    container_name: mongo3
+    restart: always
+    ports:
+      - "40003:27017"
+    networks:
+      - db
+      - backend
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+
+  mongo-setup:
+    image: mongo:4.1
+    hostname: mongo-config
+    container_name: mongo-config
+    networks:
+      - db
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    restart: "no"
+    volumes:
+      - ./database/setup.sh:/database/setup.sh
+      - ./database/init.js:/database/init.js
+    entrypoint: [ "bash", "/database/setup.sh" ]
 
 networks:
   frontend:
