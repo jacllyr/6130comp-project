@@ -1,10 +1,10 @@
 <?php
 require 'vendor/autoload.php';
 
-// Setups the connection to the MongoDB server
-try {
+// Setup database
+try { 
     $client = new MongoDB\Client(
-        'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/admin?replicaSet=rs0'
+        'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/?replicaSet=rs0'
     );
 } catch (MongoConnectionException $e) {
     die('Error connecting to MongoDB server');
@@ -12,13 +12,14 @@ try {
     die('Error: ' . $e->getMessage());
 }
 
-$users = $client->runnersCrispsDB->users;
-$codes = $client->runnersCrispsDB->codes;
+// Get the collections
+$users = $client->RunnersCrispsDB->users;
+$codes = $client->RunnersCrispsDB->codes;
 
-// Ensure the regex pattern of voucherCode is valid
-$REGEX_CHECK = "/^[a-f0-9]{10}$/";
+// Regex for the code, ensuring it follows the forma
+$REGEX = "/^[a-f0-9]{10}$/";
 
-// Sanitizes the data to prevent XSS attacks
+// Sanitize the data remove spaces, slashes, and special characters
 function sanitize($data)
 {
     $data = trim($data);
@@ -27,7 +28,7 @@ function sanitize($data)
     return $data;
 }
 
-// Sanitizes the user's data
+ // Check if the form has been submitted
 if (isset($_POST['submit'])) {
     $voucherCode = strtolower(sanitize($_POST['voucherCode']));
     $bestPlayer = sanitize($_POST['bestPlayer']);
@@ -35,38 +36,50 @@ if (isset($_POST['submit'])) {
     $email = sanitize($_POST['email']);
     $address = sanitize($_POST['address']);
 
-    // Check if the voucher code is valid  
-    if (!preg_match($REGEX_CHECK, $voucherCode)) {
-        echo "Invalid code, please try again.";
+    // Check if the code is valid
+    if (!preg_match($REGEX, $voucherCode)) {
+        echo "Invalid code";
         exit();
     }
 
-    // Check if the user's best player name is valid
+    // Check if the player name is valid
     $nameLength = strlen($bestPlayer);
-    if ($nameLength < 2 || $nameLength > 15) {
-        echo "Not a valid player name.";
+    if ($nameLength < 3 || $nameLength > 20) {
+        echo "Invalid player name";
         exit();
     }
 
-    // Check if the validation for voucherCode
-      $result = $codes->findOne(['voucherCode' => $voucherCode]);
+    // Result can be NULL but we can just fallback to else
+    $result = $codes->findOne(['_id' => $voucherCode]);
 
-      if ($result->football) {
-        // User won a free football ticket
-        echo "VOUCHER";
+    // Check if the code has been used
+    if ($result !== null && $result->used === false) {
+        if ($result->football === true) {
+        // User won a football voucher and receives an email with the voucher
+            echo "VOUCHER";
+        } else {
+         // User won a discount 10% code and receives an email with the code
+            echo "DISCOUNT";
+        }
+
+        // Insert the user into the database
+        $users->insertOne([
+            'fullName' => $fullName,
+            'email' => $email,
+            'address' => $address,
+            'bestPlayer' => $bestPlayer,
+            'voucherCode' => $voucherCode
+        ]);
+
+        // Update the code to used
+        $codes->updateOne(
+            ['_id' => $voucherCode],
+            ['$set' => ['used' => true]]
+        );
     } else {
-        // User won a 10% discount on next crisps purchase
-        echo "DISCOUNT";
+        echo "Code has already been used";
     }
-
-    // Insert the user into the database
-    $users->insertOne([
-        'fullName' => $fullName,
-        'email' => $email,
-        'address' => $address,
-        'bestPlayer' => $bestPlayer
-    ]);
 } else {
-    echo "Incorrect details";
+    echo "Invalid form";
 }
 ?>
