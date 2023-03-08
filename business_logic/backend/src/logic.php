@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 // Setup database
 try { 
     $client = new MongoDB\Client(
-        'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/?replicaSet=rs0'
+        'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/admin?replicaSet=rs0'
     );
 } catch (MongoConnectionException $e) {
     die('Error connecting to MongoDB server');
@@ -50,7 +50,9 @@ if (isset($_POST['submit'])) {
     }
 
     // Result can be NULL but we can just fallback to else
-    $result = $codes->findOne(['_id' => $voucherCode]);
+    // $result = $codes->findOne(['_id' => $voucherCode]);
+    $result = $codes->findOne(['voucherCode' => $voucherCode, 'used' => false]);
+
 
     // Check if the code has been used
     if ($result !== null && $result->used === false) {
@@ -62,6 +64,7 @@ if (isset($_POST['submit'])) {
             echo "DISCOUNT";
         }
 
+        
         // Insert the user into the database
         $users->insertOne([
             'fullName' => $fullName,
@@ -73,11 +76,9 @@ if (isset($_POST['submit'])) {
 
         // Update the code to used
         $codes->updateOne(
-            ['_id' => $voucherCode],
+            ['voucherCode' => $voucherCode],
             ['$set' => ['used' => true]]
         );
-    } else {
-        echo "Code has already been used";
     }
 } else {
     echo "Invalid form";
