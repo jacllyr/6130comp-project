@@ -1,11 +1,12 @@
 #!/bin/bash
 
+
 echo "Creating MongoDB database..."
 
 sleep 10
 
 # Create a mongodb replica set
-mongo --host mongo1:27017 <<EOF
+mongosh --host mongo1:27017 <<EOF
 var config = {
     "_id": "rs0",
     "version": 1,
@@ -30,6 +31,7 @@ var config = {
 rs.initiate(config, { force: true });
 EOF
 
+
 sleep 5
 
-mongo --host mongo1:27017 </database/init.js
+mongosh --host mongo1:27017 </database/init.js
