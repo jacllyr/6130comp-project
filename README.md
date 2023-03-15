@@ -39,12 +39,18 @@ cd to root for execution ./6130comp-project
 
 ### Football Voucher
 
+Code for football voucher - `1234567890`
+
 `sudo bash test_voucher.sh`
 
 ### Used Voucher
 
+Code for used voucher - `2222222222`
+
 `sudo bash test_used.sh`
 
-### Discount Voucher 
+### 10% Discount Voucher 
+
+Code for discount voucher - `1111111111`
 
 `sudo bash test_discount.sh`
