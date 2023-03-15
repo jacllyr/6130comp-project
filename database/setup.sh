@@ -3,7 +3,7 @@
 
 echo "Creating MongoDB database..."
 
-sleep 10
+sleep 5
 
 # Create a mongodb replica set
 mongosh --host mongo1:27017 <<EOF
@@ -32,6 +32,6 @@ rs.initiate(config, { force: true });
 EOF
 
 
-sleep 5
+sleep 15
 
 mongosh --host mongo1:27017 </database/init.js

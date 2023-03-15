@@ -76,7 +76,7 @@ HTML;
   <br>
   <button class="btn btn-lg btn-primary btn-block" style="margin-top: 10px; width: 250px; white-space: normal; word-wrap: break-word;" onclick="window.location.href='index.php';">Enter another voucher</button>
 </div>
-<div>
+</div>
 HTML;
 }
 

@@ -54,17 +54,20 @@ if (isset($_POST['submit'])) {
     $result = $codes->findOne(['voucherCode' => $voucherCode, 'used' => false]);
 
 
-    // Check if the code has been used
-    if ($result !== null && $result->used === false) {
-        if ($result->football === true) {
+// Check if the code has been used
+if ($result !== null && $result->used === false) {
+    if ($result->football === true) {
         // User won a football voucher and receives an email with the voucher
-            echo "VOUCHER";
-        } else {
-         // User won a discount 10% code and receives an email with the code
-            echo "DISCOUNT";
-        }
+        echo "VOUCHER";
+    } else {
+        // User won a discount 10% code and receives an email with the code
+        echo "DISCOUNT";
+    }
+} else {
+    // The code has already been used
+    echo "USED";
+}
 
-        
         // Insert the user into the database
         $users->insertOne([
             'fullName' => $fullName,
@@ -80,7 +83,7 @@ if (isset($_POST['submit'])) {
             ['$set' => ['used' => true]]
         );
     }
-} else {
+else {
     echo "Invalid form";
 }
 ?>
