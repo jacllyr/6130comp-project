@@ -1,8 +1,9 @@
 <?php
 
-// Send the data from the HTML form to our backend, the load balancer is running on port 4000
-$url = 'http://172.17.0.1:4000/logic.php'; // Inside WSL URL for backend
-// $url = 'http://localhost:4000/logic.php'; // Outside WSL URL for backend
+// Send the data from the php form to our backend container node, the load balancer is running on port 4000.
+$url = 'http://backend_loadbalancer:4000/logic.php'; // Docker-compose node URL for backend
+// $url = 'http://172.17.0.1:4000/logic.php'; // Docker container URL for backend
+
 
 
 $options = array(
