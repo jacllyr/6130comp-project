@@ -2,7 +2,7 @@
 
 ## A Runners Crisps Project
 
-This project is a web application with load balancers using NGINX and multiple nodes for high availability. It includes a prize draw system with unique 10-digit voucher codes for customers to win discounts on Runners Crisps or a voucher for The European cup final football game. The application follows the N-tier architecture and uses a MongoDB replica set for storing user data and voucher codes, providing a scalable and robust solution for managing high traffic loads.
+This project is a web application with load balancers using NGINX and `docker-compose.yaml` file that contains multiple nodes for high availability. The web application includes a form using a prize draw system with unique 10-digit voucher codes for customers to win discounts on Runners Crisps or a voucher for The European cup final football game. The application follows the N-tier architecture and uses a MongoDB replica set for storing user data and voucher codes, providing a scalable and robust solution for managing high traffic loads.
 
 ## Presentation Tier
 
@@ -17,25 +17,44 @@ Business directory handles the form logic response `logic.php` from the presenta
 
 Data tier includes `setup.js` that creates the MongoDB database replica with Mongo1 being the primary database. The file `init.js` is where the user data is stored and the generation of 10-digit hexdecimal voucher code for football and discount.
 
+
+## Prerequisites
+
+You need to run this project inside WSL or VM running on a linux distro. The business logic URL contains the docker container address `http://172.17.0.1:4000` t  
+
 ## Installation
+
+clone the repo 
+
+`git clone https://github.com/jacllyr/6130comp-project.git`
+
+cd inside the root folder 
+
+`cd 6130comp-project`
 
 Update the distro packages
 
 `sudo apt update`
 
-Install docker-compose
-
-`sudo apt install docker-compose`
-
 Start the docker container
 
 `docker-compose up`
 
+Open the webite form application 
+
+`http://localhost:80`
+
+To stop services
+
+`docker-compose down`
+
 ## Testing
 
-There are 3 shell test script available to test.  Please follow the below to test them invidually -
+There are three shell test scripts available to use. Please follow the below to test them individually -
 
-cd to root for execution ./6130comp-project
+cd to root of project for execution 
+
+`cd 6130comp-project`
 
 ### Football Voucher
 

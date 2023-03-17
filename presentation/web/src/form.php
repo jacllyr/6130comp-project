@@ -1,7 +1,8 @@
 <?php
 
 // Send the data from the HTML form to our backend, the load balancer is running on port 4000
-$url = 'http://172.17.0.1:4000/logic.php'; // Docker URL for backend
+$url = 'http://172.17.0.1:4000/logic.php'; // Inside WSL URL for backend
+// $url = 'http://localhost:4000/logic.php'; // Outside WSL URL for backend
 
 
 $options = array(
@@ -31,23 +32,23 @@ if ($response === "VOUCHER") {
     <p style="margin-bottom: 10px;"><b>Your details are:</b></p>
     <table style="margin: 0 auto;">
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Full Name:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Full Name:</b></td>
         <td style="text-align: left;">{$_POST['fullName']}</td>
       </tr>
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Email:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Email:</b></td>
         <td style="text-align: left;">{$_POST['email']}</td>
       </tr>
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Address:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Address:</b></td>
         <td style="text-align: left;">{$_POST['address']}</td>
       </tr>
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Best player:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Best player:</b></td>
         <td style="text-align: left;">{$_POST['bestPlayer']}</td>
       </tr>
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Voucher code:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Voucher code:</b></td>
         <td style="text-align: left;">{$_POST['voucherCode']}</td>
       </tr>
     </table>
