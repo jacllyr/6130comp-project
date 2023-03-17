@@ -20,7 +20,15 @@ Data tier includes `setup.js` that creates the MongoDB database replica with Mon
 
 ## Prerequisites
 
-You need to run this project inside WSL or VM running on a linux distro. The business logic URL contains the docker container address `http://172.17.0.1:4000` t  
+You need Docker installed on your system in order to proceed with the installation/testing. The business logic URL contains the docker container address `http://backend_loadbalancer:4000/logic.php`
+
+Install Docker-compose
+
+`https://www.docker.com/products/docker-desktop/`
+
+Start up Docker daemon services.
+
+`sudo systemctl start docker`
 
 ## Installation
 
@@ -46,13 +54,13 @@ Open the webite form application
 
 To stop services
 
-`docker-compose down`
+`docker-compose down` or `CTRL C`
 
 ## Testing
 
 There are three shell test scripts available to use. Please follow the below to test them individually -
 
-cd to root of project for execution 
+cd to root of project for execution.
 
 `cd 6130comp-project`
 

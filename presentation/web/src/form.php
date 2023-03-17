@@ -73,23 +73,23 @@ HTML;
     <p style="margin-bottom: 10px;"><b>Your details are:</b></p>
     <table style="margin: 0 auto;">
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Full Name:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Full Name:</b></td>
         <td style="text-align: left;">{$_POST['fullName']}</td>
       </tr>
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Email:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Email:</b></td>
         <td style="text-align: left;">{$_POST['email']}</td>
       </tr>
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Address:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Address:</b></td>
         <td style="text-align: left;">{$_POST['address']}</td>
       </tr>
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Best player:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Best player:</b></td>
         <td style="text-align: left;">{$_POST['bestPlayer']}</td>
       </tr>
       <tr>
-        <td style="text-align: left; padding-right: 10px;">Voucher code:</td>
+        <td style="text-align: left; padding-right: 10px;"><b>Voucher code:</b></td>
         <td style="text-align: left;">{$_POST['voucherCode']}</td>
       </tr>
     </table>
