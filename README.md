@@ -56,7 +56,7 @@ To stop services
 
 ## Testing
 
-There are three shell test scripts available to use. Please follow the below to test them individually -
+To test the three available shell test scripts individually, please follow the steps below. Note that the MongoDB replica set is being initialized, so please allow 30 seconds for the script to run:
 
 cd to root of project for execution.
 
