@@ -8,19 +8,17 @@ This project is a web application with load balancers using NGINX and `docker-co
 
 The structure of presentation is the front-end that includes a load balancer directory, Dockerfile and an nginx configuration file. The source directory also contains HTML, PHP, and CSS asset files. The form structure is located at `form.php` that handles the $response request from back-end (business logic).
 
-
 ## Business logic Tier
 
-Business directory handles the form logic response `logic.php` from the presentation tier where user data, voucher codes, is sanitized and validated to ensure its authenticity and get's stored in the MongoDB replica set. The logic also handles voucherCodes to be used once and marks them as used once the form is submitted.
+Business directory handles the form logic response `logic.php` from the presentation tier where user data, voucher codes, is sanitized and validated to ensure its authenticity and get's stored in the MongoDB replica set. The logic also handles voucherCodes to be used once and marks them as used once the form is submitted. The business logic URL contains the docker containers using NGINX load balancer - `http://backend_loadbalancer:4000/logic.php`
 
 ## Data Tier
 
-Data tier includes `setup.js` that creates the MongoDB database replica with Mongo1 being the primary database. The file `init.js` is where the user data is stored and the generation of 10-digit hexdecimal voucher code for football and discount.
-
+Data tier includes `setup.js` that creates the MongoDB database replica sets (3) with Mongo1 being the primary database. The file `init.js` is where the user data is stored and the generation of 10-digit hexdecimal voucher code for football and discount.
 
 ## Prerequisites
 
-You need Docker installed on your system in order to proceed with the installation/testing. The business logic URL contains the docker container address `http://backend_loadbalancer:4000/logic.php`
+You must have Docker installed on your system to proceed with the installation and testing. *It is recommended that you clone this project within a WSL or Linux VM with Docker installed for the following guide.*
 
 Install Docker-compose
 
