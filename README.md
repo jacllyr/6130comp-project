@@ -64,18 +64,22 @@ cd to root of project for execution.
 
 ### Football Voucher
 
-Code for football voucher - `1234567890`
+Automated testing - `sudo bash test_voucher.sh`
 
-`sudo bash test_voucher.sh`
+Manual testing form - `1234567890`
+
+### 10% Discount Voucher
+
+Automated testing - `sudo bash test_discount.sh`  
+
+Manual testing form -  `1111111111`
 
 ### Used Voucher
 
-Code for used voucher - `2222222222`
+Automated testing - `sudo bash test_used.sh`
 
-`sudo bash test_used.sh`
+Manual testing form - `2222222222`
 
-### 10% Discount Voucher 
 
-Code for discount voucher - `1111111111`
 
-`sudo bash test_discount.sh`
+
