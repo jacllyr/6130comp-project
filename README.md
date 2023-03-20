@@ -30,9 +30,11 @@ Start up Docker daemon services.
 
 ## Installation
 
-clone the repo 
+clone the repo in a WSL or linux environment using distro of your choice.
 
 `git clone https://github.com/jacllyr/6130comp-project.git`
+
+Or unzip the package `6130comp-project.zip`
 
 cd inside the root folder 
 
