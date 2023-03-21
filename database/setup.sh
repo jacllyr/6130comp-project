@@ -1,8 +1,8 @@
 #!/bin/bash
 
-
 echo "Creating MongoDB database..."
 
+# 5 second delay for letting the docker containers being initialized
 sleep 5
 
 # Create a mongodb replica set
@@ -31,7 +31,10 @@ var config = {
 rs.initiate(config, { force: true });
 EOF
 
-
+# Short delay to create the generated voucher codes in init.js
 sleep 15
 
 mongosh --host mongo1:27017 </database/init.js
+
+# Mongo-setup never sleeps
+exec tail -f /dev/null

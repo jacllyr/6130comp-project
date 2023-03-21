@@ -46,7 +46,7 @@ Update the distro packages
 
 Start the docker container
 
-`docker-compose up`
+`sudo docker-compose up`
 
 Open the webite form application 
 
@@ -82,6 +82,14 @@ Automated testing - `sudo bash test_used.sh`
 
 Manual testing form - `2222222222`
 
+### Output generated voucher codes
 
+You may use the command below in a terminal once the MongoDB replica sets have been initialized. The command will output all of the 1000 generated codes. 900 of vouchers will be 10% off and 100 vouchers will be football vouchers. 
 
+`docker logs --details --timestamps mongo-config`
 
+*Once the code is redeemed, the vouchers cannot be used again and will be marked as 'used' in the database.*
+
+### Verify docker containers are running
+
+`docker container ls`
